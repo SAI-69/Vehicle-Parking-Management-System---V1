@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #121212;
+      color: #f1f1f1;
+      padding: 30px 20px;
+    }
+
+    h4 {
+      color: #FFD700;
+      margin-bottom: 15px;
+    }
+
+    h5 {
+      font-size: 1.2rem;
+    }
+
+    .dashboard-card {
+      background-color: #1E1E1E;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(255, 215, 0, 0.15);
+      margin-bottom: 30px;
+    }
+
+    .section-header {
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .form-control,
+    .form-select {
+      background-color: #555;
+      border: 1px solid #000000;
+      border-radius: 8px;
+      color: #fff;
+      padding: 10px;
+      width: 100%;
+    }
+
+    .form-control::placeholder {
+      color: #aaa;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: #FFD700;
+      background-color: #1a1a1a;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .btn-primary {
+      background-color: #FFD700;
+      color: #000;
+    }
+
+    .btn-primary:hover {
+      background-color: #e6c200;
+    }
+
+    .btn-danger {
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #c0392b;
+    }
+
+    .list-group-item {
+      background-color: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: #f1f1f1;
+      margin-bottom: 12px;
+      padding: 15px;
+    }
+
+    .text-muted {
+      color: #aaa !important;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .col-lg-6 {
+      flex: 1 1 48%;
+    }
+
+    @media (max-width: 768px) {
+      .col-lg-6 {
+        flex: 1 1 100%;
+      }
+    }
+
+    .top-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .top-header h5 {
+      margin-bottom: 5px;
+    }
+
+    .img-fluid {
+      width: 100%;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <div class="top-header">
+    <div>
+      <h5>Hello, <strong style="color:#FFD700;">{{ user.full_name }}</strong></h5>
+      <small class="text-muted">Current time: {{ current_time }}</small>
+    </div>
+    <form action="{{ url_for('logout') }}" method="post">
+      <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
+  </div>
+
+  <!-- Reservation Trend Chart -->
+  {% if chart_data %}
+  <div class="dashboard-card">
+    <div class="section-header">
+      <h4>📊 Reservation Trends</h4>
+    </div>
+    <img src="data:image/png;base64,{{ chart_data }}" class="img-fluid" alt="Reservation Trends Chart">
+  </div>
+  {% endif %}
+
+  <div class="row">
+    <!-- Current Parking -->
+    <div class="col-lg-6">
+      <div class="dashboard-card">
+        <div class="section-header">
+          <h4>🚗 Current Parking</h4>
+        </div>
+        {% if reservations %}
+        <ul class="list-group">
+          {% for res in reservations %}
+          <li class="list-group-item">
+            <strong>Spot ID:</strong> {{ res.spot_id }}<br>
+            <strong>Car:</strong> {{ res.car_type }}<br>
+            <strong>Car Number:</strong> {{ res.vehicle_no }}<br>
+            <strong>In:</strong> {{ res.in_time.strftime('%Y-%m-%d %H:%M') }}<br>
+            <strong>Out:</strong> {{ res.out_time.strftime('%Y-%m-%d %H:%M') }}<br>
+            <strong>Approx. Cost:</strong> ₹{{ res.approx_cost }}<br>
+            <strong>Reservation ID:</strong> {{ res.id }}
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p class="text-muted">No reservations yet.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Reserve Spot -->
+    <div class="col-lg-6">
+      <div class="dashboard-card">
+        <div class="section-header">
+          <h4>📥 Reserve a Parking Spot</h4>
+        </div>
+        <form action="/reserve_spot" method="post">
+          <div class="mb-3">
+            <label class="form-label">Select Parking Lot:</label>
+            <select class="form-select" name="parking_lot" required>
+              {% for lot in Parking_lots %}
+              <option value="{{ lot.id }}">{{ lot.location }} - {{ lot.address }} (₹{{ lot.price }}/hr)</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Car Type:</label>
+            <input type="text" name="car_type" class="form-control" placeholder="e.g., Sedan, SUV" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Vehicle Number:</label>
+            <input type="text" name="vehicle_no" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">In Time:</label>
+            <input type="datetime-local" name="in_time" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Out Time:</label>
+            <input type="datetime-local" name="out_time" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Reserve Spot</button>
+        </form>
+      </div>
+
+      <!-- Release Spot -->
+      <div class="dashboard-card">
+        <div class="section-header">
+          <h4>📤 Release a Parking Spot</h4>
+        </div>
+        <form action="{{ url_for('release_spot') }}" method="post">
+          <div class="mb-3">
+            <label class="form-label">Reservation ID:</label>
+            <input type="number" name="reservation_id" class="form-control" placeholder="Enter reservation ID" required>
+          </div>
+          <button type="submit" class="btn btn-danger">Release Spot</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Parking History -->
+  <div class="dashboard-card">
+    <div class="section-header">
+      <h4>📚 Parking History</h4>
+    </div>
+    {% if history %}
+    <ul class="list-group">
+      {% for h in history %}
+      <li class="list-group-item">
+        <strong>Spot ID:</strong> {{ h.spot_id }}<br>
+        <strong>Lot:</strong> {{ h.lot_name }}<br>
+        <strong>Car:</strong> {{ h.car_type }}<br>
+        <strong>Car Number:</strong> {{ h.vehicle_no }}<br>
+        <strong>In:</strong> {{ h.in_time.strftime('%Y-%m-%d %H:%M') }}<br>
+        <strong>Out:</strong> {{ h.out_time.strftime('%Y-%m-%d %H:%M') }}<br>
+        <strong>Cost:</strong> ₹{{ h.parking_cost }}
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-muted">No parking history available.</p>
+    {% endif %}
+  </div>
+</div>
+
+</body>
+</html>

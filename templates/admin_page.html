@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Dashboard - Parking Management</title>
+<style>
+      * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: #121212;
+  color: #e0e0e0;
+}
+
+.sidebar {
+  width: 220px;
+  height: 100vh;
+  background-color: #1E1E1E;
+  color: #FFD700;
+  padding: 20px;
+  position: fixed;
+}
+
+.sidebar h2 {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+.sidebar nav a {
+  display: block;
+  color: #eae4c1;
+  text-decoration: none;
+  padding: 12px 15px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.sidebar nav a:hover {
+  background: #d4eb24;
+  color: #000;
+}
+
+.logout-btn {
+  background-color: #685a0b;
+  color: #910707;
+  font-weight: bold;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn logout-btn:hover {
+  background-color: #e6c200;
+}
+
+.main-content {
+  margin-left: 240px;
+  padding: 40px 30px;
+}
+
+h1, h2, h3, h4 {
+  color: #ffffff;
+}
+
+form {
+  background: #1E1E1E;
+  padding: 30px;
+  border-radius: 8px;
+  max-width: 600px;
+  margin-bottom: 50px;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
+}
+
+form input:focus {
+  border-color: #FFD700;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+  background: #121212;
+  outline: none;
+}
+
+
+button[type="reset"] {
+  background-color: transparent;
+  color: #FFD700;
+  border: 1px solid #FFD700;
+  padding: 12px 25px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: 0.3s;
+}
+
+button[type="reset"]:hover {
+  background-color: #FFD700;
+  color: #000;
+}
+
+
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #d8ee35;
+}
+
+
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1.5px solid #b3c527;
+  border-radius: 5px;
+  background: #121212;
+  color: #fff;
+}
+
+input:focus {
+  outline: none;
+  border-color: #b3c527;
+}
+
+button[type="submit"] {
+  background-color: #d0e243;
+  color: #000;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+  background-color:#88942a ;
+}
+
+
+div[style*="width: 350px"] {
+  background-color: #1E1E1E !important;
+  border: 1px solid #b3c527 !important;
+}
+
+
+a[title="Spot"] {
+  color: #000 !important;
+}
+
+
+.btn-edit {
+  background-color: #b3c527 !important;
+  color: #000 !important;
+  text-decoration: none;
+  border: none;
+  border-radius: 4px;
+  cursor:pointer;
+  padding: 6px 12px;
+}
+
+.btn-edit:hover {
+  background-color: #88942a !important;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #1E1E1E;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(255, 215, 0, 0.1);
+  margin-bottom: 50px;
+  color: #e0e0e0;
+}
+
+thead {
+  background-color: #b3c527;
+  color: #000;
+}
+
+th, td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid #333;
+}
+
+tbody tr:hover {
+  background-color: #2a2a2a;
+}
+
+
+.chart-container {
+  background: #1E1E1E;
+  padding: 30px;
+  border-radius: 8px;
+  margin-bottom: 50px;
+  box-shadow: 0 3px 8px rgba(255, 215, 0, 0.1);
+}
+
+.chart-title {
+  color: #c5da2c;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+.bar {
+  background-color: #dfc42f;
+  color: #000;
+}
+
+
+.vehicle-info {
+  background: #333;
+  color: #aa9313;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+</style>
+</head>
+  <body>
+    <aside class="sidebar">
+      <h2>Admin Panel</h2>
+      <nav>
+        <a href="#parking-lot-form">Create Parking Lot</a>
+        <a href="#parking-lots-table">Manage Lots</a>
+        <a href="#reg-users-table">Registered Users</a>
+        <a href="#parking-history-table">Parking History</a>
+        <a href="{{ url_for('admin_summary') }}">📊 View Summary</a>
+        <a href="{{ url_for('logout') }}" class="btn logout-btn">Logout</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <!-- Create Parking Lot Form -->
+      <h1 id="parking-lot-form">Create New ParkingLot</h1>
+      <br>
+      <form
+        id="create_parking_lot_form"
+        action="/create_parking_lot"
+        method="POST"
+      >
+        <label for="lotName">Parking Lot Name</label>
+        <input
+          type="text"
+          id="lotName"
+          name="location"
+          placeholder="Location name"
+          required
+        />
+        <label for="price">Price (per hour)</label>
+        <input
+          type="number"
+          id="price"
+          name="price"
+          min="0"
+          step="0.01"
+          placeholder="Price in Rs"
+          required
+        />
+        <label for="address">Address</label>
+        <input
+          type="text"
+          id="address"
+          name="address"
+          placeholder="Full address"
+          required
+        />
+        <label for="pinCode">Pin Code</label>
+        <input
+          type="text"
+          id="pinCode"
+          name="pin_code"
+          maxlength="6"
+          pattern="[0-9]{6}"
+          placeholder="Pin/ZIP code"
+          required
+        />
+        <label for="maxSpots">Max Spots</label>
+        <input
+          type="number"
+          id="maxSpots"
+          name="max_spots"
+          min="1"
+          placeholder="Number of spots"
+          required
+        />
+        <label for="uni_code">Unique Lot Code</label>
+        <input type="text" id="uni_code" name="uni_code"
+        pattern="[A-Z]{2}[0-9]{4}" placeholder="Unique lot identification code"
+        title="Enter two uppercase letters followed by four digits (e.g.,
+        AB1234)"" required />
+        <button type="submit">Create Parking Lot</button>
+      </form>
+      
+<!-- Manage Parking Lots -->
+      <h1 id="parking-lots-table">Manage Parking Lots</h1>
+      <h2>Parking Lots ({{ Parking_lots | length }})</h2>
+      <br>
+      <div
+        style="
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+          justify-content: flex-start;
+          width: 100%;
+          max-width: 1200px;
+          margin: 0 auto;
+          box-sizing: border-box;
+        "
+      >
+        {% for lot in Parking_lots %}
+        <div
+          style="
+            width: 350px;
+            max-width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #fff;
+            box-sizing: border-box;
+            height: 500px;
+            overflow: auto;
+          "
+        >
+          <!-- Lot Info -->
+          <h3>{{ lot.location }}</h3>
+          <p><strong>Price:</strong> {{ lot.price }}</p>
+          <p><strong>Address:</strong> {{ lot.address }}</p>
+          <p><strong>Pincode:</strong> {{ lot.pin_code }}</p>
+          <p><strong>Lot Code:</strong> {{ lot.unique_lot_code }}</p>
+          <!-- Lot Summary -->
+          <div
+            style="
+              margin-top: 10px;
+              padding: 10px;
+             
+              border-radius: 5px;
+            "
+          >
+            {% set occupied = lot.spots | selectattr('status', 'equalto', 'Occupied') | list | length %}
+            {% set available = lot.spots | selectattr('status', 'equalto', 'Available') | list | length %}
+            <p><strong>Total Spots:</strong> {{ occupied+available }}</p>
+            <p><strong>Occupied:</strong> {{ occupied }}</p>
+            <p><strong>Available:</strong> {{ available }}</p>
+
+          </div>
+          <!-- Individual Spot Cards -->
+          <div style="margin-top: 15px">
+            <h4>Spots:</h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px">
+            {% for spot in lot.spots %}
+              <a href="{{ url_for('manage_spot', spot_id=spot.id) }}" title="Spot"
+                style="width: 50px; height: 50px; background-color: '{{ 'red' if spot.status == 'Occupied' else 'green' }}';
+                      color: white; display: flex; align-items: center; justify-content: center;
+                      border-radius: 5px; font-weight: bold; text-decoration: none;">
+                {{ loop.index }}
+              </a>
+            {% endfor %}
+
+            </div>
+          </div>
+          <!-- Actions -->
+          <div
+            style="
+              margin-top: 15px;
+              display: flex;
+              justify-content: space-between;
+              margin-right: 35px;
+            "
+          >
+            <a
+              href="{{ url_for('edit_lot', lot_id=lot.id) }}"
+              class="btn-edit"
+              style="padding: 12px 25px"
+              >Edit</a
+            >
+            <form
+              action="{{ url_for('delete_lot', lot_id=lot.id) }}"
+              method="POST"
+              style="display: inline; padding: 0; margin: 0"
+            >
+              <button type="submit" class="btn-edit">Delete</button>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+  <h1 id="reg-users-table">Registered Users</h1>
+  <br>
+<h2>Users ({{ Users | length }})</h2>
+<br>
+<table>
+  <thead>
+    <tr>
+      <th>User Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Currently Using Spot</th>
+      <th>Parking Lot</th>
+      <th>Spot Number</th>
+      <th>Vehicle Type</th>
+      <th>Vehicle Number</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in Users %}
+      {% set reservations = user_status.get(user.id, []) %}
+      {% if reservations %}
+        {% for res in reservations %}
+        <tr>
+          <td>{{ user.full_name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phone_no }}</td>
+          <td>Yes</td>
+          <td>{{ res.lot }}</td>
+          <td>{{ res.spot_id }}</td>
+          <td>{{ res.car_type }}</td>
+          <td>{{ res.vehicle_no }}</td>
+        </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td>{{ user.full_name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phone_no }}</td>
+          <td>No</td>
+          <td colspan="4" style="text-align: center;">—</td>
+        </tr>
+      {% endif %}
+    {% endfor %}
+  </tbody>
+</table>
+<h1 id="parking-history-table">Parking History</h1>
+<br>
+<table border="1">
+  <thead>
+    <tr>
+      <th>User Name</th>
+      <th>Parking Lot</th>
+      <th>Spot ID</th>
+      <th>In Time</th>
+      <th>Out Time</th>
+      <th>Parking Cost</th>
+      <th>Car Type</th>
+      <th>Vehicle Number</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in Users %}
+      {% if history_by_user[user.id] %}
+        {% for record in history_by_user[user.id] %}
+        <tr>
+          <td>{{ user.full_name }}</td>
+          <td>{{ record.lot_name }}</td>
+          <td>{{ record.spot_id }}</td>
+          <td>{{ record.in_time.strftime('%Y-%m-%d %H:%M') }}</td>
+          <td>{{ record.out_time.strftime('%Y-%m-%d %H:%M') }}</td>
+          <td>{{ record.parking_cost }}</td>
+          <td>{{ record.car_type }}</td>
+          <td>{{ record.vehicle_no }}</td>
+        </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td>{{ user.full_name }}</td>
+          <td colspan="7" style="text-align:center;">No parking history</td>
+        </tr>
+      {% endif %}
+    {% endfor %}
+  </tbody>
+</table>
+
+
+    </main>
+  </body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>User Registration</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #121212;
+      color: #f1f1f1;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .background-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://cdni.iconscout.com/illustration/premium/thumb/car-parking-4239525-3529981.png') no-repeat center center/cover;
+      opacity: 0.1;
+      z-index: -1;
+      filter: grayscale(20%) brightness(80%);
+    }
+
+    .register-container {
+      background: linear-gradient(145deg, #1e1e1e, #2c2c2c);
+      padding: 2.5rem 2rem;
+      border-radius: 25px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+      width: 100%;
+      max-width: 450px;
+      text-align: center;
+      border: 1px solid #333;
+    }
+
+    .register-container:hover {
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9);
+      transform: scale(1.01);
+    }
+
+    h2 {
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      font-size: 1.75rem;
+      color: #ffffff;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+      text-align: left;
+    }
+
+    label {
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+      display: block;
+      color: #bbbbbb;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="tel"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #555;
+      background-color: #292929;
+      color: #fff;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s ease-in-out;
+    }
+
+    input:focus {
+      border-color: #d4eb24;
+      box-shadow: 0 0 10px rgba(212, 235, 36, 0.5);
+      outline: none;
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #d4eb24;
+      border: none;
+      border-radius: 12px;
+      color: #000;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #c3d623;
+      transform: scale(1.05);
+    }
+
+    .login-link {
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      color: #aaa;
+    }
+
+    .login-link a {
+      color: #d4eb24;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 576px) {
+      .register-container {
+        padding: 2rem;
+        margin: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="background-image"></div>
+  <div class="register-container">
+    <h2>Create an Account</h2>
+    <form action="/user_register" method="POST">
+      <div class="form-group">
+        <label for="full_name">Full Name</label>
+        <input type="text" id="full_name" name="full_name" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email ID</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Create Password</label>
+        <input type="password" id="password" name="password" required />
+      </div>
+      <input type="submit" value="Register" />
+    </form>
+    <div class="login-link">
+      Already have an account? <a href="/user_login">Login here</a><br />
+      Are you an Admin? <a href="/admin_login">Click here</a>
+    </div>
+  </div>
+</body>
+
+</html>

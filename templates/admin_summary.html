@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Summary</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: #121212;
+      color: #e0e0e0;
+      padding: 30px 20px;
+    }
+
+    .chart-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #1E1E1E;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #ffffff;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      border: 1px solid #a9b456;
+    }
+
+    .back-btn {
+      display: block;
+      width: fit-content;
+      margin: 30px auto 0;
+      background-color: #968838 ;
+      color: #000;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .back-btn:hover {
+      background-color: #d4eb24;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chart-container">
+    <h2>📈 Occupancy Overview</h2>
+    <img src="data:image/png;base64,{{ occupancy_chart }}" alt="Occupancy Chart">
+  </div>
+
+  <div class="chart-container">
+    <h2>🅿️ Parking Spots by Lot</h2>
+    <img src="data:image/png;base64,{{ bar_chart }}" alt="Bar Chart">
+  </div>
+
+  <div class="chart-container">
+    <h2>👤 Top 5 Most Active Users</h2>
+    <img src="data:image/png;base64,{{ top_users_chart }}" alt="Top Users Chart">
+  </div>
+
+  <a href="{{ url_for('admin_page') }}" class="back-btn">⬅ Back to Admin Page</a>
+
+</body>
+</html>

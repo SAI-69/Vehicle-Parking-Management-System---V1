@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #121212;
+      color: #f1f1f1;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .background-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://cdni.iconscout.com/illustration/premium/thumb/car-parking-4239525-3529981.png') no-repeat center center/cover;
+      opacity: 0.1;
+      z-index: -1;
+      filter: grayscale(20%) brightness(80%);
+    }
+
+    .login-container {
+      background: linear-gradient(145deg, #1e1e1e, #2c2c2c);
+      padding: 3rem 2rem;
+      border-radius: 25px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      border: 1px solid #333;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .login-container:hover {
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9);
+      transform: scale(1.01);
+    }
+
+    .illustration {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1.5rem;
+      border: 2px solid #d4eb24;
+    }
+
+    h2 {
+      margin-bottom: 1.2rem;
+      font-weight: 700;
+      font-size: 1.75rem;
+      color: #ffffff;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    label {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      display: block;
+      color: #bbbbbb;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #555;
+      background-color: #292929;
+      color: #fff;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s ease-in-out;
+    }
+
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      border-color: #d4eb24;
+      box-shadow: 0 0 10px rgba(212, 235, 36, 0.5);
+      outline: none;
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #d4eb24;
+      border: none;
+      border-radius: 12px;
+      color: #000;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #c3d623;
+      transform: scale(1.05);
+    }
+
+    .footer-text {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #888;
+      border-top: 1px solid #333;
+      padding-top: 1rem;
+    }
+
+    @media (max-width: 576px) {
+      .login-container {
+        padding: 2rem;
+        margin: 1rem;
+      }
+
+      .illustration {
+        width: 80px;
+        height: 80px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="background-image"></div>
+
+  <div class="login-container">
+    <img src="https://static.vecteezy.com/system/resources/previews/036/122/625/non_2x/illustration-of-a-car-parking-area-asphalt-texture-of-parking-lot-with-parking-lines-and-car-symbols-information-label-of-the-area-sign-for-vehicle-parking-vector.jpg" class="illustration" alt="car illustration">
+    <h2>Welcome Back!</h2>
+    <form action="/admin_login" method="POST">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required placeholder="Enter your username" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required placeholder="Enter your password" />
+      </div>
+      <input type="submit" value="Login" />
+    </form>
+    <div class="footer-text">
+      © 2025 Admin Panel | All rights reserved.
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

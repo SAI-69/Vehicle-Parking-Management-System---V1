@@ -90,9 +90,9 @@ project/
 
 
 
-git clone https://github.com/your-username/vehicle-parking-management.git
+git clone https://github.com/SAI-69/Vehicle-Parking-Management-System---V1
 
-cd vehicle-parking-management
+cd Vehicle-Parking-Management-System---V1
 
 
 
@@ -197,6 +197,7 @@ Matplotlib
 
 
 SQLAlchemy
+
 
 
 
